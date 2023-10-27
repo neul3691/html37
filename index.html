@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응형 홈페이지</title>
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="css/main.css">
+    
+
+    <script src="lib/code.jquery.com_jquery-3.7.1.min.js"></script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        $(function () {
+
+            //15번 파일 참고, 메뉴아이콘 클릭했을 때 실행
+            
+            //메뉴보기 클릭시 .mobile_gnb 나타남
+            //메뉴닫기 클릭시 .mobile_gnb 들어감
+            
+            let wrap = $('.inner');
+            let btn = $('.menu_open');
+            let navi = $('.mobile_gnb');
+
+            btn.click(function(){
+                navi.addClass('on');
+            })
+
+            
+            let btn2 = $('.menu_close');
+
+            btn2.click(function(){
+                navi.removeClass('on');
+            })
+
+
+
+            //23번 파일 참고, 아코디언메뉴
+            //2차메뉴('.gnb3 .depth02')가 display:none 이면 => 슬라이드다운
+            //2차메뉴가 display:block 이면 => 슬라이드업
+            $('.mobile_gnb .depth01 > a').click(function () {
+                if ($(this).next().css('display') == 'none') {
+                    $('.mobile_gnb .depth02').slideUp();
+                    $(this).next().slideDown();
+                } else {
+                    //$('.gnb3 .depth02').slideUp(); 아래식과 같은실행값
+                    $(this).next().slideUp();
+                }
+            });
+
+            /* 조건문if(조건식) {
+                조건이 맞으면 실행
+            } else {조건이 맞지않으면 실행
+            } else는 조건문() 작성안함 */
+
+
+
+            /* //23번 파일 참고, 마우스 올렸을때 헤더메뉴 드롭다운
+            //mouseenter slideDown(), mouseenter slideUp()
+            $('.inner .pc_gnb .depth01 > a').mouseenter(function(){
+                $(this).next().slideDown();
+            });
+
+            $('.inner .pc_gnb .depth01 > a').mouseleave(function(){
+                $(this).next().slideUp();
+            }); */
+            
+
+             //pc헤더 메뉴 싱글 드롭다운
+            //1차 메뉴한테 마우스 올렸을 때 실행
+            //마우스 올린 자식이 슬라이드\업,다운
+            //자식, 자손인지 헷갈리면 find 
+            //자식이면 children
+            $('.pc_gnb .depth01').mouseenter(function(){
+                /* $('.pc_gnb .depth02').slideDown() 
+                한번에 전부 내려옴 올라가지는 않음 새로고침필요 */
+                $(this).children('ul').stop().slideDown();
+            })
+            $('.pc_gnb .depth01').mouseleave(function(){
+                $(this).children('ul').stop().slideUp();
+            })
+
+
+
+
+            //36번 파일 참고, 스크롤시 헤더스타일 변경
+            let headerTop = $('header').offset().top;
+
+            $(window).scroll(function () {
+                let scrollBar = $(window).scrollTop();
+
+                if (headerTop < scrollBar) {
+                    $('header').addClass('on');
+                } else {
+                    $('header').removeClass('on');
+                }
+
+                console.log(scrollBar)
+
+            }); //each()
+
+
+
+            //swiper-pagination
+            var swiper = new Swiper(".mySwiper1", {
+                pagination: {
+                    el: ".swiper-pagination",
+                },
+            }); 
+
+
+
+            //21번 파일 참고, 첫번째 컨텐츠 제목
+            $('.small_item .item').mouseenter(function () {
+                //.item에게 마우스 올렸을 때 실행
+
+                //마우스 올린(this) .item의 자식(.children)인 img의 src가져옴
+                let thisImg = $(this).find('img').attr('src');
+                console.log(thisImg) //브라우저 검색창의 콘솔탭에서 확인가능
+
+                //마우스 올린 .item의 자식인 h4의 텍스트 가져옴
+                let thisText = $(this).find('h4').text();
+                //마우스 올린 .item의 자식인 p의 텍스트 가져옴
+                let thisText1 = $(this).find('p').text();
+
+                $('.big_item img').attr('src', thisImg)
+                //('속성', 변수) 변수명에는 ''따옴표 넣지않음
+                $('.big_item h4').text(thisText);
+                $('.big_item p').text(thisText1);
+            }); //.item.mouseenter()
+
+
+
+            //36번 파일 참고, 스크롤시 두번째 컨텐츠 실행
+            let cont02Top = $('.cont02').offset().top;
+
+            $(window).scroll(function () {
+                let scrollBar = $(window).scrollTop();
+
+                $('.cont02 .list .item').each(function (index) {
+                    if (cont02Top - 200 < scrollBar) {
+                        $(this).addClass('on' + index)
+                    } else {
+                        $(this).removeClass('on' + index)
+                    }
+                });
+
+                console.log(cont02Top)
+            }); //each()
+            
+        }); //jquery end
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="inner">
+            <h1>
+                <a href="#">haneul.P</a>
+            </h1>
+            <nav class="pc_gnb">
+                <ul>
+
+                    <li class="depth01">
+                        <a href="#">menu01</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu01-1</a></li>
+                            <li><a href="#">menu01-2</a></li>
+                            <li><a href="#">menu01-3</a></li>
+                            <li><a href="#">menu01-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu02</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu02-1</a></li>
+                            <li><a href="#">menu02-2</a></li>
+                            <li><a href="#">menu02-3</a></li>
+                            <li><a href="#">menu02-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu03</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu03-1</a></li>
+                            <li><a href="#">menu03-2</a></li>
+                            <li><a href="#">menu03-3</a></li>
+                            <li><a href="#">menu03-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu04</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu04-1</a></li>
+                            <li><a href="#">menu04-2</a></li>
+                            <li><a href="#">menu04-3</a></li>
+                            <li><a href="#">menu04-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu05</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu05-1</a></li>
+                            <li><a href="#">menu05-2</a></li>
+                            <li><a href="#">menu05-3</a></li>
+                            <li><a href="#">menu05-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                </ul>
+            </nav><!-- .pc_gnb end -->
+
+            <div class="mobile menu_open">
+                <p>메뉴보기</p>
+            </div><!-- .mobile menu_open end -->
+
+
+
+            <!-- 🔶모바일 내비게이션🔶 -->
+            <nav class="mobile mobile_gnb">
+                <div class="menu_close">
+                    <p>메뉴닫기</p>
+                </div><!-- .menu_close end -->
+                <ul>
+
+                    <li class="depth01">
+                        <a href="#">menu01</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu01-1</a></li>
+                            <li><a href="#">menu01-2</a></li>
+                            <li><a href="#">menu01-3</a></li>
+                            <li><a href="#">menu01-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu02</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu02-1</a></li>
+                            <li><a href="#">menu02-2</a></li>
+                            <li><a href="#">menu02-3</a></li>
+                            <li><a href="#">menu02-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu03</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu03-1</a></li>
+                            <li><a href="#">menu03-2</a></li>
+                            <li><a href="#">menu03-3</a></li>
+                            <li><a href="#">menu03-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu04</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu04-1</a></li>
+                            <li><a href="#">menu04-2</a></li>
+                            <li><a href="#">menu04-3</a></li>
+                            <li><a href="#">menu04-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                    <li class="depth01">
+                        <a href="#">menu05</a>
+                        <ul class="depth02">
+                            <li><a href="#">menu05-1</a></li>
+                            <li><a href="#">menu05-2</a></li>
+                            <li><a href="#">menu05-3</a></li>
+                            <li><a href="#">menu05-4</a></li>
+                        </ul><!-- .depth02 end -->
+                    </li><!-- .depth01 end -->
+
+                </ul>
+            </nav><!-- .mobile mobile_gnb end -->
+
+        </div><!-- .inner end -->
+    </header>
+
+    <main>
+        <section class="main_visual">
+            <!-- 스와이퍼 슬라이드 적용 -->
+            <!-- swiper demo -->
+            <!-- Swiper -->
+            <div class="swiper mySwiper1">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="img/디저트 (4).jpg" alt="">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="img/디저트 (20).jpg" alt="">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="img/디저트 (2).jpg" alt="">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="img/디저트 (3).jpg" alt="">
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section><!-- .main_visual end -->
+
+
+
+        <section class="cont01">
+            <div class="inner">
+                <div class="title">
+                    <h3>컨텐츠 제목 첫번째</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </div><!-- .title end -->
+
+                <div class="list">
+                    <div class="big_item">
+                        <figure>
+                            <img src="img/디저트 (6).jpg" alt="">
+                        </figure>
+                        <h4>아이템 테마 1</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore sit minima, dolores
+                            dolorem eveniet fuga culpa aperiam ipsum rerum, cum necessitatibus minus impedit nobis
+                            error, hic consectetur totam. Enim, at!</p>
+                    </div><!-- .big_item end -->
+
+                    <div class="small_item">
+                        <div class="item">
+                            <a href="#">
+                                <figure>
+                                    <img src="img/디저트 (18).jpg" alt="">
+                                </figure>
+                                <h4>아이템 테마 1</h4>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, illo ipsa. Iusto,
+                                    aliquam vel reiciendis officiis quis debitis blanditiis eum sunt, maiores iste
+                                    tempora consectetur quibusdam est esse, qui officia!</p>
+                            </a>
+                        </div><!-- .item end -->
+
+                        <div class="item">
+                            <a href="#">
+                                <figure>
+                                    <img src="img/디저트 (16).jpg" alt="">
+                                </figure>
+                                <h4>아이템 테마 2</h4>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, illo ipsa.</p>
+                            </a>
+                        </div><!-- .item end -->
+
+                        <div class="item">
+                            <a href="#">
+                                <figure>
+                                    <img src="img/디저트 (27).jpg" alt="">
+                                </figure>
+                                <h4>아이템 테마 3</h4>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, illo ipsa. Iusto,
+                                    aliquam vel reiciendis officiis quis debitis blanditiis eum sunt,</p>
+                            </a>
+                        </div><!-- .item end -->
+
+                        <div class="item">
+                            <a href="#">
+                                <figure>
+                                    <img src="img/디저트 (6).jpg" alt="">
+                                </figure>
+                                <h4>아이템 테마 4</h4>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                            </a>
+                        </div><!-- .item end -->
+                    </div><!-- .small_item end -->
+                </div><!-- .list end -->
+
+            </div><!-- .inner end -->
+        </section><!-- .cont01 end -->
+
+
+
+        <section class="cont02">
+            <div class="title">
+                <h3>컨텐츠 제목 두번째</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div><!-- .title end -->
+
+            <div class="list">
+                <div class="item">
+                    <strong>테마 1</strong>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                </div><!-- .item end -->
+
+                <div class="item">
+                    <strong>테마 2</strong>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                </div><!-- .item end -->
+
+                <div class="item">
+                    <strong>테마 3</strong>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                </div><!-- .item end -->
+
+                <div class="item">
+                    <strong>테마 4</strong>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                </div><!-- .item end -->
+            </div><!-- .list end -->
+
+        </section><!-- .cont02 end -->
+
+    </main>
+    <footer>
+        <ul>
+            <li>대표 : 박하늘</li>
+            <li>연락처 : <a href="tel: 010-2672-2829">010-2672-2829</a></li>
+        </ul>
+        <p>Copyright 2023.parkhaneul.All Rights Reserved.</p>
+    </footer>
+</body>
+
+</html>
